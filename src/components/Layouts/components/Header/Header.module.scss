@@ -20,14 +20,20 @@
     justify-content: space-between;
 }
 
+.logo {
+    display: flex;
+    height: 42px;
+    width: 300px;
+    cursor: pointer;
+}
 .search,
 .search-result {
-    width: 361px;
+    width: 500px;
 }
 .search {
     position: relative;
     height: var(--search-height);
-    padding-left: 16px;
+    padding-left: 15px;
     display: flex;
     background-color: rgba(22, 24, 35, 0.06);
     border-radius: 92px;
@@ -37,9 +43,17 @@
         flex: 1;
         height: 100%;
         color: var(--black);
+        font-family: 'TikTokFont', san-serif;
+        font-weight: 500;
         font-size: 1.6rem;
         caret-color: var(--primary);
         background-color: transparent;
+        &::placeholder {
+            color: rgba(22, 24, 35);
+            opacity: 0.8;
+            font-family: 'TikTokFont', san-serif;
+            font-weight: 500;
+        }
     }
 
     input:not(:placeholder-shown) ~ .search-btn {
@@ -59,6 +73,10 @@
     &:focus-within {
         border-color: rgba(22, 24, 35, 0.2);
     }
+
+    &:hover {
+        border: 1px solid rgba(22, 24, 35, 0.2);
+    }
 }
 
 .search-title {
@@ -77,21 +95,26 @@
     color: rgba(22, 24, 35, 0.34);
 }
 .search-btn {
-    width: var(--search-button-width);
-    height: 100%;
-    font-size: 1.8rem;
+    padding: 10px 15px 11px 13px;
+    font-size: 0rem;
     color: rgba(22, 24, 35, 0.34);
+    background-color: transparent;
     border-top-right-radius: var(--search-border-radius);
     border-bottom-right-radius: var(--search-border-radius);
 
     &:hover {
-        cursor: pointer;
         background-color: rgba(22, 24, 35, 0.03);
+        cursor: pointer;
     }
 
     &:active {
         background-color: rgba(22, 24, 35, 0.06);
     }
+}
+
+.search:hover .search-btn {
+    color: rgba(22, 24, 35, 1);
+    background-color: rgba(22, 24, 35, 0.06);
 }
 
 // Actions
@@ -109,11 +132,40 @@
 }
 
 .actions-btn {
+    position: relative;
+    display: flex;
+    margin-left: 16px;
     color: #161823;
     font-size: 2.2rem;
     background-color: transparent;
-    padding: 4px 12px;
     cursor: pointer;
+}
+
+.badge {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -20%;
+    left: 16px;
+    height: 2rem;
+    min-width: 2rem;
+    line-height: 1.8rem;
+    border-radius: 10px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    font-family: 'ProximaNova', sans-serif;
+    color: var(--white);
+    background-color: var(--primary);
+}
+.upload-btn {
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    height: 36px;
+
+    &:hover {
+        background-color: rgba(22, 24, 35, 0.03);
+        text-decoration: none;
+    }
 }
 
 .user-avatar {
@@ -121,6 +173,6 @@
     height: 32px;
     object-fit: cover;
     border-radius: 50%;
-    margin-left: 12px;
+    margin-left: 24px;
     cursor: pointer;
 }

@@ -12,6 +12,7 @@ const defaultFn = () => {};
 
 function Menu({ children, items = [], onChange = defaultFn }) {
     const [history, setHistory] = useState([{ data: items }]);
+    const [titleItem, setTitleItem] = useState('');
     const current = history[history.length - 1];
 
     const renderItems = () => {
@@ -24,9 +25,11 @@ function Menu({ children, items = [], onChange = defaultFn }) {
                     onClick={() => {
                         if (isParent) {
                             setHistory((prev) => [...prev, item.children]);
+                            setTitleItem(item.children.title);
                         } else {
                             onChange(item);
                         }
+                        console.log(current);
                     }}
                 />
             );
@@ -36,16 +39,15 @@ function Menu({ children, items = [], onChange = defaultFn }) {
     return (
         <Tippy
             interactive
-            hideOnClick="true"
             delay={[0, 500]}
-            offset={[12, 8]}
+            offset={[13, 11]}
             placement="bottom-end"
             render={(attrs) => (
                 <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
                     <PopperWrapper className={cx('menu-popper')}>
                         {history.length > 1 && (
                             <Header
-                                title="Language"
+                                title={titleItem}
                                 onBack={() => {
                                     setHistory((prev) => prev.slice(0, prev.length - 1));
                                 }}

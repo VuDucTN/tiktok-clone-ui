@@ -1,21 +1,7 @@
 import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faCircleXmark,
-    faCloudUpload,
-    faCoins,
-    faEllipsisVertical,
-    faGear,
-    faKeyboard,
-    faLanguage,
-    faMagnifyingGlass,
-    faQuestionCircle,
-    faSignOut,
-    faSpinner,
-    faSun,
-    faUser,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faEllipsisVertical, faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
@@ -26,12 +12,27 @@ import styles from './Header.module.scss';
 import images from '~/assets/images';
 import AccountItem from '~/components/AccountItem';
 import Menu from '~/components/Popper/Menu';
+import {
+    CoinIcon,
+    FeedbackIcon,
+    InboxIcon,
+    LanguageIcon,
+    LogoutIcon,
+    ModeIcon,
+    PlusIcon,
+    ProfileIcon,
+    SearchIcon,
+    SettingIcon,
+    TickIcon,
+    ToolIcon,
+} from '~/components/Icons';
+import Image from '~/components/Image';
 
 const cx = classNames.bind(styles);
 
 const MENU_ITEMS = [
     {
-        icon: <FontAwesomeIcon icon={faLanguage} />,
+        icon: <LanguageIcon />,
         title: 'English',
         children: {
             title: 'Language',
@@ -42,13 +43,21 @@ const MENU_ITEMS = [
         },
     },
     {
-        icon: <FontAwesomeIcon icon={faQuestionCircle} />,
+        icon: <FeedbackIcon />,
         title: 'Feedback and help',
         to: '/feedback',
     },
     {
-        icon: <FontAwesomeIcon icon={faKeyboard} />,
-        title: 'Keyboard shortcuts',
+        icon: <ModeIcon />,
+        title: 'Dark mode',
+        children: {
+            title: 'Dark mode',
+            data: [
+                { type: 'mode', code: 'device', icon: <TickIcon />, title: 'Use device theme' },
+                { type: 'mode', code: 'dark', title: 'Dark mode' },
+                { type: 'mode', code: 'light', title: 'Light mode' },
+            ],
+        },
     },
 ];
 
@@ -68,23 +77,31 @@ function Header() {
 
     const userMenu = [
         {
-            icon: <FontAwesomeIcon icon={faUser} />,
+            icon: <ProfileIcon />,
             title: 'View profile',
             to: '/@user',
         },
         {
-            icon: <FontAwesomeIcon icon={faCoins} />,
+            icon: <CoinIcon />,
             title: 'Get coins',
             to: '/coin',
         },
         {
-            icon: <FontAwesomeIcon icon={faGear} />,
+            icon: <ToolIcon />,
+            title: 'Creator tools',
+            children: {
+                title: 'Creator tools',
+                data: [{ type: 'mode', code: 'device', icon: <TickIcon />, title: 'Use device theme', separate: true }],
+            },
+        },
+        {
+            icon: <SettingIcon />,
             title: 'Setting',
             to: '/setting',
         },
         ...MENU_ITEMS,
         {
-            icon: <FontAwesomeIcon icon={faSignOut} />,
+            icon: <LogoutIcon />,
             title: 'Log out',
             to: '/logout',
             separate: true,
@@ -95,7 +112,9 @@ function Header() {
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <div className={cx('logo')}>
-                    <img src={images.logo} alt="logo" />
+                    <a href="/">
+                        <img src={images.logo} alt="logo" />
+                    </a>
                 </div>
                 <HeadlessTippy
                     visible={searchResult.length > 0}
@@ -113,7 +132,7 @@ function Header() {
                     )}
                 >
                     <div className={cx('search')}>
-                        <input placeholder="Search accounts and videos" spellCheck={false} />
+                        <input placeholder="Search" spellCheck={false} />
 
                         <button>
                             <FontAwesomeIcon className={cx('clear')} icon={faCircleXmark} />
@@ -122,7 +141,7 @@ function Header() {
                         <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
 
                         <button className={cx('search-btn')}>
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
+                            <SearchIcon />
                         </button>
                     </div>
                 </HeadlessTippy>
@@ -130,24 +149,28 @@ function Header() {
                 <div className={cx('actions')}>
                     {currentUser ? (
                         <>
-                            <Tippy delay={[0, 200]} content="Upload Video" placement="bottom">
+                            <Button text leftIcon={<PlusIcon />} className={cx('upload-btn')}>
+                                Upload
+                            </Button>
+                            <Tippy delay={[0, 200]} content="Inbox" placement="bottom">
                                 <button className={cx('actions-btn')}>
-                                    <FontAwesomeIcon icon={faCloudUpload} />
+                                    <InboxIcon />
+                                    <span className={cx('badge')}>12</span>
                                 </button>
                             </Tippy>
                         </>
                     ) : (
                         <>
-                            <Button text>Upload</Button>
                             <Button primary>Log in</Button>
                         </>
                     )}
                     <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
                         {currentUser ? (
-                            <img
+                            <Image
                                 className={cx('user-avatar')}
                                 src="https://p9-sign-sg.tiktokcdn.com/aweme/720x720/tos-alisg-avt-0068/7321829345096876033.jpeg?lk3s=a5d48078&nonce=42630&refresh_token=7ed893a2a0d290633c07e9d3534be7d6&x-expires=1736913600&x-signature=oUC4Q%2Fpgtub3tRIv9zfW%2BdzYboc%3D&shp=a5d48078&shcp=81f88b70"
                                 alt="userAvatar"
+                                fallback={images.noUser}
                             />
                         ) : (
                             <button className={cx('more-btn')}>
